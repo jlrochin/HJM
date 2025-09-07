@@ -83,10 +83,10 @@ services:
       NODE_ENV: production
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.cagpu-backend.rule=PathPrefix(`/cagpu/api`)"
+      - "traefik.http.routers.cagpu-backend.rule=PathPrefix(`/cagpu`) && PathPrefix(`/cagpu/api`)"
       - "traefik.http.routers.cagpu-backend.entrypoints=web"
       - "traefik.http.services.cagpu-backend.loadbalancer.server.port=3000"
-      - "traefik.http.middlewares.cagpu-api-strip.stripprefix.prefixes=/cagpu/api"
+      - "traefik.http.middlewares.cagpu-api-strip.stripprefix.prefixes=/cagpu"
       - "traefik.http.routers.cagpu-backend.middlewares=cagpu-api-strip"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
