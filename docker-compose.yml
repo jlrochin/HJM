@@ -143,9 +143,17 @@ services:
   watchtower:
     image: containrrr/watchtower:latest
     container_name: watchtower
-    command: --interval 300 --cleanup --label-enable
+    restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=60
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INCLUDE_STOPPED=true
+      - WATCHTOWER_REVIVE_STOPPED=true
+    command: --interval 60 --cleanup --label-enable
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
 
 volumes:
   pgdata_cagpu:
