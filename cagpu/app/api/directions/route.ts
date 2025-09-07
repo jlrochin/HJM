@@ -15,7 +15,7 @@ export async function GET() {
     })
 
     // Actualizar el conteo de servicios
-    const directionsWithCount = directions.map(direction => ({
+    const directionsWithCount = directions.map((direction: any) => ({
       ...direction,
       servicesCount: direction.services.length
     }))
