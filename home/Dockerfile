@@ -2,16 +2,15 @@
 
 FROM node:20-alpine AS deps
 WORKDIR /app
-ENV NODE_ENV=production
+# No NODE_ENV=production aquí; necesitamos devDependencies (Next.js/Tailwind)
 COPY package.json package-lock.json* yarn.lock* pnpm-lock.yaml* ./
-RUN if [ -f package-lock.json ]; then npm ci; \
+RUN if [ -f package-lock.json ]; then npm ci --include=dev; \
     elif [ -f yarn.lock ]; then corepack enable && yarn install --frozen-lockfile; \
     elif [ -f pnpm-lock.yaml ]; then corepack enable && pnpm install --frozen-lockfile; \
     else npm install; fi
 
 FROM node:20-alpine AS builder
 WORKDIR /app
-ENV NODE_ENV=production
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build

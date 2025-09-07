@@ -2,10 +2,10 @@
 
 FROM node:20-alpine AS builder
 WORKDIR /app
-ENV NODE_ENV=production
+# No establecer NODE_ENV=production aquí; necesitamos devDependencies para construir
 # Copiar definiciones y lockfiles desde frontend/
 COPY frontend/package.json frontend/package-lock.json* frontend/yarn.lock* frontend/pnpm-lock.yaml* ./
-RUN if [ -f package-lock.json ]; then npm ci; \
+RUN if [ -f package-lock.json ]; then npm ci --include=dev; \
     elif [ -f yarn.lock ]; then corepack enable && yarn install --frozen-lockfile; \
     elif [ -f pnpm-lock.yaml ]; then corepack enable && pnpm install --frozen-lockfile; \
     else npm install; fi
