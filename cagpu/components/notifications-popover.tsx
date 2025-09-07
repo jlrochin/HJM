@@ -23,7 +23,7 @@ export function NotificationsPopover() {
   useEffect(() => {
     let isMounted = true;
     const fetchNotifications = () => {
-      fetch('/api/notifications')
+      fetch('/cagpu/api/notifications')
         .then(res => res.json())
         .then(data => {
           if (!isMounted) return;
@@ -59,7 +59,7 @@ export function NotificationsPopover() {
 
   const markAllAsRead = async () => {
     const unread = notifications.filter(n => !n.isRead)
-    await Promise.all(unread.map(n => fetch('/api/notifications', {
+    await Promise.all(unread.map(n => fetch('/cagpu/api/notifications', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: n.id })
@@ -69,7 +69,7 @@ export function NotificationsPopover() {
   }
 
   const markAsRead = async (id: number) => {
-    await fetch('/api/notifications', {
+    await fetch('/cagpu/api/notifications', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })

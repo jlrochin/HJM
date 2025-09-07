@@ -3,18 +3,13 @@
     "next/core-web-vitals"
   ],
   "rules": {
-    // Reglas de seguridad
     "no-eval": "error",
     "no-implied-eval": "error",
     "no-new-func": "error",
     "no-script-url": "error",
-    
-    // Reglas de buenas prácticas
     "no-console": ["warn", { "allow": ["warn", "error"] }],
     "no-debugger": "error",
     "no-alert": "error",
-    
-    // Deshabilitar reglas problemáticas temporalmente
     "react/no-unescaped-entities": "off",
     "react/jsx-no-comment-textnodes": "off"
   },

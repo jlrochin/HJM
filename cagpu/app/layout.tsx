@@ -30,14 +30,14 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/logo_cagpu_sintexto.png', sizes: '32x32', type: 'image/png' },
-      { url: '/logo_cagpu_sintexto.png', sizes: '16x16', type: 'image/png' }
+      { url: '/cagpu/logo_cagpu_sintexto.png', sizes: '32x32', type: 'image/png' },
+      { url: '/cagpu/logo_cagpu_sintexto.png', sizes: '16x16', type: 'image/png' }
     ],
     shortcut: '/favicon.ico',
-    apple: '/logo_cagpu_sintexto.png',
+    apple: '/cagpu/logo_cagpu_sintexto.png',
     other: {
       rel: 'apple-touch-icon-precomposed',
-      url: '/logo_cagpu_sintexto.png',
+      url: '/cagpu/logo_cagpu_sintexto.png',
     },
   },
 }

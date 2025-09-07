@@ -36,7 +36,7 @@ export default function Login() {
     setLoginError('')
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/cagpu/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

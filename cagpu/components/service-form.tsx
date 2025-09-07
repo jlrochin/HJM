@@ -60,7 +60,7 @@ export function ServiceForm({ service, onSaved }: { service?: Service, onSaved?:
 
   // Cargar direcciones para el select
   useEffect(() => {
-    fetch('/api/directions')
+    fetch('/cagpu/api/directions')
       .then(res => res.json())
       .then(data => setDirectionsData(data))
       .catch(error => console.error('Error al cargar direcciones:', error))
@@ -121,10 +121,9 @@ export function ServiceForm({ service, onSaved }: { service?: Service, onSaved?:
         return
       }
 
-      // Debug: mostrar datos que se envían
-      console.log('Datos del servicio a enviar:', serviceData)
+      // Datos del servicio a enviar
 
-      const url = '/api/services'
+      const url = '/cagpu/api/services'
       const method = isNewService ? 'POST' : 'PUT'
 
       const response = await fetch(url, {

@@ -39,6 +39,28 @@ export function Header() {
   const router = useRouter();
 
   // ============================================================================
+  // FUNCIÓN: MANEJAR CIERRE DE SESIÓN
+  // ============================================================================
+  // Cierra la sesión del usuario, limpia el localStorage y redirige al login
+  const handleLogout = React.useCallback(async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch (e) {
+      // Silenciar errores de logout
+    }
+
+    // Limpiar datos del usuario
+    localStorage.removeItem("user");
+    localStorage.removeItem("role");
+
+    // Notificar cambio de usuario
+    window.dispatchEvent(new Event("userChanged"));
+
+    // Redirigir al login
+    router.push("/login");
+  }, [router]);
+
+  // ============================================================================
   // EFECTO: CIERRE DE SESIÓN AUTOMÁTICO POR INACTIVIDAD
   // ============================================================================
   // Configura un temporizador de 5 minutos que se reinicia con cada interacción
@@ -65,29 +87,7 @@ export function Header() {
       clearTimeout(timeout);
       events.forEach(event => window.removeEventListener(event, resetTimer));
     };
-  }, []);
-
-  // ============================================================================
-  // FUNCIÓN: MANEJAR CIERRE DE SESIÓN
-  // ============================================================================
-  // Cierra la sesión del usuario, limpia el localStorage y redirige al login
-  const handleLogout = async () => {
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-    } catch (e) {
-      // Silenciar errores de logout
-    }
-
-    // Limpiar datos del usuario
-    localStorage.removeItem("user");
-    localStorage.removeItem("role");
-
-    // Notificar cambio de usuario
-    window.dispatchEvent(new Event("userChanged"));
-
-    // Redirigir al login
-    router.push("/login");
-  };
+  }, [handleLogout]);
 
   return (
     <header className="sticky top-0 z-10 w-full border-b bg-background">
@@ -95,7 +95,7 @@ export function Header() {
         {/* Logo y nombre de la aplicación */}
         <div className="flex items-center gap-2 md:gap-4">
           <img
-            src="/logo_cagpu_sintexto.png"
+            src="/cagpu/logo_cagpu_sintexto.png"
             alt="CAGPU Logo"
             className="h-8 w-8 object-contain !cursor-pointer"
           />

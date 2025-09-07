@@ -46,7 +46,7 @@ export function ProfileContent() {
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        const response = await fetch('/api/profile')
+        const response = await fetch('/cagpu/api/profile')
         if (response.ok) {
           const data = await response.json()
           setUserData(data.user)
@@ -179,7 +179,7 @@ export function ProfileContent() {
         updateData.newPassword = formData.newPassword
       }
 
-      const response = await fetch('/api/profile', {
+      const response = await fetch('/cagpu/api/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

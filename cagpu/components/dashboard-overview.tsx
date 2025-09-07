@@ -28,8 +28,8 @@ export function DashboardOverview() {
     const fetchData = async () => {
       try {
         const [servicesRes, directionsRes] = await Promise.all([
-          fetch('/api/services'),
-          fetch('/api/directions')
+          fetch('/cagpu/api/services'),
+          fetch('/cagpu/api/directions')
         ])
 
         const services = await servicesRes.json()
@@ -71,7 +71,7 @@ export function DashboardOverview() {
   useEffect(() => {
     const fetchActiveUsers = async () => {
       try {
-        const res = await fetch('/api/users/active');
+        const res = await fetch('/cagpu/api/users/active');
         const data = await res.json();
         setStats((prev) => ({ ...prev, activeUsers: data.activeUsers }));
       } catch (e) {
@@ -96,7 +96,7 @@ export function DashboardOverview() {
   }, []);
 
   useEffect(() => {
-    fetch('/api/user-change-history')
+    fetch('/cagpu/api/user-change-history')
       .then(res => res.json())
       .then(data => setUserChanges(data.history || []));
   }, [])

@@ -39,6 +39,37 @@ export function ServiceManagement() {
   const [selectedDirection, setSelectedDirection] = useState<string>('all')
   const [directions, setDirections] = useState<Array<{ id: string, name: string }>>([])
 
+  const loadData = useCallback(async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+
+      // Cargar servicios y direcciones en paralelo
+      const [servicesRes, directionsRes] = await Promise.all([
+        fetch('/cagpu/api/services', { credentials: 'include' }),
+        fetch('/cagpu/api/directions', { credentials: 'include' })
+      ])
+
+      if (servicesRes.ok && directionsRes.ok) {
+        const [servicesData, directionsData] = await Promise.all([
+          servicesRes.json(),
+          directionsRes.json()
+        ])
+        setServices(servicesData)
+        setDirections(directionsData)
+      } else {
+        const errorText = await servicesRes.text()
+        console.error('Error en respuesta de servicios:', servicesRes.status, errorText)
+        setError(`Error ${servicesRes.status}: ${errorText}`)
+      }
+    } catch (error) {
+      console.error('Error loading data:', error)
+      setError('Error al cargar los datos')
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
   useEffect(() => {
     if (!authLoading) {
       if (user) {
@@ -52,7 +83,7 @@ export function ServiceManagement() {
         }, 2000)
       }
     }
-  }, [user, authLoading])
+  }, [user, authLoading, loadData])
 
   // Filtrar servicios con useMemo para mejor rendimiento
   const filteredServices = useMemo(() => {
@@ -85,37 +116,6 @@ export function ServiceManagement() {
     return filtered
   }, [searchTerm, services, selectedDirection, isAdmin, isDeveloper, user?.serviceId])
 
-  const loadData = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      setError(null)
-
-      // Cargar servicios y direcciones en paralelo
-      const [servicesRes, directionsRes] = await Promise.all([
-        fetch('http://localhost:3001/api/services', { credentials: 'include' }),
-        fetch('http://localhost:3001/api/directions', { credentials: 'include' })
-      ])
-
-      if (servicesRes.ok && directionsRes.ok) {
-        const [servicesData, directionsData] = await Promise.all([
-          servicesRes.json(),
-          directionsRes.json()
-        ])
-        setServices(servicesData)
-        setDirections(directionsData)
-      } else {
-        const errorText = await servicesRes.text()
-        console.error('Error en respuesta de servicios:', servicesRes.status, errorText)
-        setError(`Error ${servicesRes.status}: ${errorText}`)
-      }
-    } catch (error) {
-      console.error('Error loading data:', error)
-      setError('Error al cargar los datos')
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
-
   const handleEditService = useCallback((service: Service) => {
     setModalService(service)
   }, [])
@@ -131,6 +131,27 @@ export function ServiceManagement() {
 
   const handleCloseViewModal = useCallback(() => {
     setViewService(null)
+  }, [])
+
+  const getServiceTypeLabel = useCallback((type?: string) => {
+    if (!type) return 'Sin especificar'
+
+    const typeMap: Record<string, string> = {
+      'clinical': 'Clínico',
+      'administrative': 'Administrativo',
+      'support': 'Apoyo',
+      'specialized': 'Especializado',
+      'Unidad': 'Unidad',
+      'División': 'División',
+      'Servicio': 'Servicio',
+      'Departamento': 'Departamento',
+      'Subdirección': 'Subdirección',
+      'Coordinación': 'Coordinación',
+      'Área': 'Área',
+      'Laboratorio': 'Laboratorio'
+    }
+
+    return typeMap[type] || type
   }, [])
 
   const handleExport = useCallback(() => {
@@ -156,32 +177,11 @@ export function ServiceManagement() {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-  }, [filteredServices])
+  }, [filteredServices, getServiceTypeLabel])
 
   const clearFilters = useCallback(() => {
     setSearchTerm('')
     setSelectedDirection('all')
-  }, [])
-
-  const getServiceTypeLabel = useCallback((type?: string) => {
-    if (!type) return 'Sin especificar'
-
-    const typeMap: Record<string, string> = {
-      'clinical': 'Clínico',
-      'administrative': 'Administrativo',
-      'support': 'Apoyo',
-      'specialized': 'Especializado',
-      'Unidad': 'Unidad',
-      'División': 'División',
-      'Servicio': 'Servicio',
-      'Departamento': 'Departamento',
-      'Subdirección': 'Subdirección',
-      'Coordinación': 'Coordinación',
-      'Área': 'Área',
-      'Laboratorio': 'Laboratorio'
-    }
-
-    return typeMap[type] || type
   }, [])
 
   if (authLoading) {

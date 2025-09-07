@@ -175,7 +175,7 @@ export default function Dashboard() {
     if (!authLoading && user) {
       // Cargar historial de cambios recientes para admins y developers
       if (isAdmin || isDeveloper) {
-        fetch('/api/user-change-history', { credentials: 'include' })
+        fetch('/cagpu/api/user-change-history', { credentials: 'include' })
           .then(res => res.json())
           .then(data => setHistory(data.history || []));
       }
@@ -184,7 +184,7 @@ export default function Dashboard() {
 
   React.useEffect(() => {
     if (isAdmin || isDeveloper) {
-      fetch(`/api/audit-log?page=${auditPage}&limit=10`, { credentials: 'include' })
+      fetch(`/cagpu/api/audit-log?page=${auditPage}&limit=10`, { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
           setAudit(data.logs || [])

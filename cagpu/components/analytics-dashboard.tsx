@@ -54,11 +54,11 @@ export function AnalyticsDashboard() {
       setIsLoading(true)
       try {
         const [servicesRes, directionsRes, changeHistoryRes, auditLogRes, usersRes] = await Promise.all([
-          fetch('/api/services'),
-          fetch('/api/directions'),
-          fetch('/api/user-change-history?limit=100'),
-          fetch('/api/audit-log?limit=100'),
-          fetch('/api/users')
+          fetch('/cagpu/api/services'),
+          fetch('/cagpu/api/directions'),
+          fetch('/cagpu/api/user-change-history?limit=100'),
+          fetch('/cagpu/api/audit-log?limit=100'),
+          fetch('/cagpu/api/users')
         ])
 
         const services = await servicesRes.json()
@@ -88,11 +88,11 @@ export function AnalyticsDashboard() {
     setRefreshing(true)
     try {
       const [servicesRes, directionsRes, changeHistoryRes, auditLogRes, usersRes] = await Promise.all([
-        fetch('/api/services'),
-        fetch('/api/directions'),
-        fetch('/api/user-change-history?limit=100'),
-        fetch('/api/audit-log?limit=100'),
-        fetch('/api/users')
+        fetch('/cagpu/api/services'),
+        fetch('/cagpu/api/directions'),
+        fetch('/cagpu/api/user-change-history?limit=100'),
+        fetch('/cagpu/api/audit-log?limit=100'),
+        fetch('/cagpu/api/users')
       ])
 
       const services = await servicesRes.json()

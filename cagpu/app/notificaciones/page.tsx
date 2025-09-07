@@ -34,7 +34,7 @@ export default function NotificacionesPage() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/notifications?page=${page}&limit=${pageSize}&all=1`)
+    fetch(`/cagpu/api/notifications?page=${page}&limit=${pageSize}&all=1`)
       .then(res => res.json())
       .then(data => {
         setNotifications(data.notifications || []);
@@ -118,7 +118,7 @@ export default function NotificacionesPage() {
                 </div>
                 {!n.isRead && (
                   <Button size="sm" variant="ghost" className="ml-2 mt-1 text-blue-700 hover:bg-blue-100" onClick={async () => {
-                    await fetch('/api/notifications', {
+                    await fetch('/cagpu/api/notifications', {
                       method: 'PATCH',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({ id: n.id })

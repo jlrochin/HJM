@@ -22,8 +22,8 @@ export function Directions() {
     const fetchData = async () => {
       try {
         const [servicesRes, directionsRes] = await Promise.all([
-          fetch('/api/services'),
-          fetch('/api/directions')
+          fetch('/cagpu/api/services'),
+          fetch('/cagpu/api/directions')
         ])
 
         const services = await servicesRes.json()

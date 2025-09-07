@@ -93,7 +93,7 @@ export default function AdminUsuariosPage() {
   const currentUsers = filteredUsers.slice((page - 1) * pageSize, page * pageSize)
 
   useEffect(() => {
-    fetch('/api/users')
+    fetch('/cagpu/api/users')
       .then(res => res.json())
       .then(data => {
         setUsers(data)
@@ -131,7 +131,7 @@ export default function AdminUsuariosPage() {
     }
     setFormLoading(true)
     try {
-      const res = await fetch('/api/users', {
+      const res = await fetch('/cagpu/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -186,7 +186,7 @@ export default function AdminUsuariosPage() {
 
     setEditFormLoading(true)
     try {
-      const res = await fetch(`/api/users/${editUser.id}`, {
+      const res = await fetch(`/cagpu/api/users/${editUser.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editForm),
@@ -219,7 +219,7 @@ export default function AdminUsuariosPage() {
     if (!confirmUser) return;
     setConfirmLoading(true);
     try {
-      const res = await fetch(`/api/users/${confirmUser.id}`, {
+      const res = await fetch(`/cagpu/api/users/${confirmUser.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: confirmUser.isActive ? 'deactivate' : 'activate' }),
@@ -251,7 +251,7 @@ export default function AdminUsuariosPage() {
     setUserHistory([])
 
     try {
-      const res = await fetch(`/api/users/${user.id}/history`)
+      const res = await fetch(`/cagpu/api/users/${user.id}/history`)
       const data = await res.json()
 
       if (!res.ok) {

@@ -27,7 +27,7 @@ export function MobileSidebar() {
            ============================================================================ */}
       <div className="flex items-center gap-2 mb-8">
         <img
-          src="/logo_cagpu_sintexto.png"
+          src="/cagpu/logo_cagpu_sintexto.png"
           alt="CAGPU Logo"
           className="h-8 w-8 object-contain"
         />
