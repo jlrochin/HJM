@@ -11,6 +11,12 @@ RUN if [ -f package-lock.json ]; then npm ci --include=dev; \
 
 FROM node:20-alpine AS builder
 WORKDIR /app
+# Variables SOLO para build
+ARG JWT_SECRET=build_dummy_secret_for_nextjs_build_only_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+ARG DATABASE_URL=postgresql://user:password@localhost:5432/dbname?schema=public
+ENV JWT_SECRET=${JWT_SECRET}
+ENV DATABASE_URL=${DATABASE_URL}
+ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # Generar Prisma Client si existe
