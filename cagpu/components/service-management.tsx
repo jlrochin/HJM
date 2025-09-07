@@ -55,15 +55,19 @@ export function ServiceManagement() {
           servicesRes.json(),
           directionsRes.json()
         ])
-        setServices(servicesData)
-        setDirections(directionsData)
+        
+        // Validar que los datos sean arrays
+        if (Array.isArray(servicesData) && Array.isArray(directionsData)) {
+          setServices(servicesData)
+          setDirections(directionsData)
+        } else {
+          setError('Formato de datos inválido recibido del servidor')
+        }
       } else {
         const errorText = await servicesRes.text()
-        console.error('Error en respuesta de servicios:', servicesRes.status, errorText)
         setError(`Error ${servicesRes.status}: ${errorText}`)
       }
     } catch (error) {
-      console.error('Error loading data:', error)
       setError('Error al cargar los datos')
     } finally {
       setIsLoading(false)
@@ -87,11 +91,15 @@ export function ServiceManagement() {
 
   // Filtrar servicios con useMemo para mejor rendimiento
   const filteredServices = useMemo(() => {
+    if (!Array.isArray(services)) {
+      return []
+    }
+
     let filtered = services
 
     // Para usuarios no-admin y no-developer, mostrar solo su servicio asignado
     if (!isAdmin && !isDeveloper && user?.serviceId) {
-      filtered = filtered.filter(service => service.id === user.serviceId)
+      filtered = filtered.filter(service => service && service.id === user.serviceId)
       return filtered
     }
 
@@ -99,16 +107,18 @@ export function ServiceManagement() {
     if (isAdmin || isDeveloper) {
       // Filtrar por dirección seleccionada
       if (selectedDirection !== 'all') {
-        filtered = filtered.filter(service => service.directionId === selectedDirection)
+        filtered = filtered.filter(service => service && service.directionId === selectedDirection)
       }
 
       // Filtrar por término de búsqueda
       if (searchTerm.trim() !== '') {
         const searchLower = searchTerm.toLowerCase()
         filtered = filtered.filter(service =>
-          service.name.toLowerCase().includes(searchLower) ||
-          (service.responsiblePerson && service.responsiblePerson.toLowerCase().includes(searchLower)) ||
-          (service.location && service.location.toLowerCase().includes(searchLower))
+          service && (
+            service.name?.toLowerCase().includes(searchLower) ||
+            (service.responsiblePerson && service.responsiblePerson.toLowerCase().includes(searchLower)) ||
+            (service.location && service.location.toLowerCase().includes(searchLower))
+          )
         )
       }
     }
@@ -155,28 +165,38 @@ export function ServiceManagement() {
   }, [])
 
   const handleExport = useCallback(() => {
-    const csvContent = [
-      ['Nombre', 'Dirección', 'Responsable', 'Extensión', 'Ubicación', 'Tipo', 'Descripción'],
-      ...filteredServices.map(service => [
-        service.name,
-        service.direction.name,
-        service.responsiblePerson || 'No especificado',
-        service.phoneExtension || 'No especificado',
-        service.location || 'No especificado',
-        getServiceTypeLabel(service.serviceType),
-        service.description || 'Sin descripción'
-      ])
-    ].map(row => row.map(field => `"${field}"`).join(',')).join('\n')
+    if (!Array.isArray(filteredServices) || filteredServices.length === 0) {
+      setError('No hay servicios para exportar')
+      return
+    }
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-    const link = document.createElement('a')
-    const url = URL.createObjectURL(blob)
-    link.setAttribute('href', url)
-    link.setAttribute('download', `servicios_${new Date().toISOString().split('T')[0]}.csv`)
-    link.style.visibility = 'hidden'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    try {
+      const csvContent = [
+        ['Nombre', 'Dirección', 'Responsable', 'Extensión', 'Ubicación', 'Tipo', 'Descripción'],
+        ...filteredServices.map(service => [
+          service?.name || 'Sin nombre',
+          service?.direction?.name || 'Sin dirección',
+          service?.responsiblePerson || 'No especificado',
+          service?.phoneExtension || 'No especificado',
+          service?.location || 'No especificado',
+          getServiceTypeLabel(service?.serviceType),
+          service?.description || 'Sin descripción'
+        ])
+      ].map(row => row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(',')).join('\n')
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const link = document.createElement('a')
+      const url = URL.createObjectURL(blob)
+      link.setAttribute('href', url)
+      link.setAttribute('download', `servicios_${new Date().toISOString().split('T')[0]}.csv`)
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      setError('Error al exportar los datos')
+    }
   }, [filteredServices, getServiceTypeLabel])
 
   const clearFilters = useCallback(() => {
@@ -262,6 +282,7 @@ export function ServiceManagement() {
               className="pl-10 search-input"
               value={searchTerm}
               onChange={(e) => startTransition(() => setSearchTerm(e.target.value))}
+              aria-label="Buscar servicios"
             />
             {isPending && (
               <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 animate-spin" />
@@ -281,6 +302,7 @@ export function ServiceManagement() {
               size="sm"
               className={`rounded-none border-r-0 ${viewMode === 'grid' ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700' : ''}`}
               onClick={() => setViewMode('grid')}
+              aria-label="Vista en cuadrícula"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z" />
@@ -291,6 +313,7 @@ export function ServiceManagement() {
               size="sm"
               className={`rounded-none ${viewMode === 'list' ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700' : ''}`}
               onClick={() => setViewMode('list')}
+              aria-label="Vista en lista"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
@@ -360,16 +383,16 @@ export function ServiceManagement() {
         viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 services-grid">
             {filteredServices.map((service, index) => (
-              <Card key={service.id} className="relative service-card animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+              <Card key={service?.id || index} className="relative service-card animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
-                    <CardTitle className="text-lg leading-tight">{service.name}</CardTitle>
+                    <CardTitle className="text-lg leading-tight">{service?.name || 'Sin nombre'}</CardTitle>
                     <Badge variant="secondary" className="text-xs">
-                      {getServiceTypeLabel(service.serviceType)}
+                      {getServiceTypeLabel(service?.serviceType)}
                     </Badge>
                   </div>
                   <CardDescription className="text-sm">
-                    {service.direction.name}
+                    {service?.direction?.name || 'Sin dirección'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
