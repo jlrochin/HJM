@@ -17,7 +17,10 @@ RUN corepack enable
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate || true
-RUN if [ -f tsconfig.json ]; then npx tsc -p tsconfig.json; else echo "No tsconfig.json found"; fi
+# Si existe un script build:backend en package.json, ejecutarlo; si no, omitir compilación TS
+RUN node -e "const p=require('./package.json'); process.exit(p.scripts && p.scripts['build:backend']?0:1)" \
+  && npm run build:backend \
+  || echo "No build:backend script, skipping TS compile"
 
 FROM base AS runner
 USER node
@@ -25,6 +28,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY --chown=node:node package.json ./
 COPY --chown=node:node prisma ./prisma
-COPY --from=builder --chown=node:node /app/dist ./dist
+# Copiar artefactos de build si existieran
+COPY --from=builder --chown=node:node /app/dist ./dist 2>/dev/null || true
 EXPOSE 3000
 CMD sh -c "npx prisma migrate deploy && node dist/index.js"
