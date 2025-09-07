@@ -19,23 +19,24 @@ jobs:
           - name: home
             context: ./home
             file: ./home/Dockerfile
-            tag: ghcr.io/jlrochin/home:latest
+            tag: ghcr.io/jlrochin/home
           - name: cagpu-frontend
             context: ./cagpu
             file: ./cagpu/Dockerfile.frontend
-            tag: ghcr.io/jlrochin/cagpu-frontend:latest
+            tag: ghcr.io/jlrochin/cagpu-frontend
           - name: cagpu-backend
             context: ./cagpu
             file: ./cagpu/Dockerfile.backend
-            tag: ghcr.io/jlrochin/cagpu-backend:latest
+            tag: ghcr.io/jlrochin/cagpu-backend
           - name: mau-frontend
             context: ./MAU
             file: ./MAU/Dockerfile.frontend
-            tag: ghcr.io/jlrochin/mau-frontend:latest
+            tag: ghcr.io/jlrochin/mau-frontend
           - name: mau-backend
             context: ./MAU
             file: ./MAU/Dockerfile.backend
-            tag: ghcr.io/jlrochin/mau-backend:latest
+            tag: ghcr.io/jlrochin/mau-backend
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,4 +60,8 @@ jobs:
           context: ${{ matrix.context }}
           file: ${{ matrix.file }}
           push: true
-          tags: ${{ matrix.tag }}
+          tags: |
+            ${{ matrix.tag }}:latest
+            ${{ matrix.tag }}:${{ github.sha }}
+          cache-from: type=registry,ref=${{ matrix.tag }}:latest
+          cache-to: type=inline
