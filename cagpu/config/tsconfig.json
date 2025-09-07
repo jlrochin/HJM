@@ -1,0 +1,72 @@
+{
+  // ============================================================================
+  // CONFIGURACIÓN DE TYPESCRIPT PARA CAGPU
+  // ============================================================================
+  // Este archivo define la configuración del compilador de TypeScript
+  // Incluye configuraciones para:
+  // - Librerías del navegador y ES6+
+  // - Opciones de compilación estricta
+  // - Integración con Next.js
+  // - Mapeo de rutas con alias @/*
+  // ============================================================================
+  
+  "compilerOptions": {
+    // ============================================================================
+    // LIBRERÍAS Y COMPATIBILIDAD
+    // ============================================================================
+    "lib": ["dom", "dom.iterable", "esnext"], // Librerías del navegador y ES6+
+    "allowJs": true,                           // Permitir archivos JavaScript
+    "target": "ES6",                           // Versión objetivo de JavaScript
+    
+    // ============================================================================
+    // OPCIONES DE COMPILACIÓN
+    // ============================================================================
+    "skipLibCheck": true,                      // Saltar verificación de librerías
+    "strict": true,                            // Habilitar modo estricto
+    "noEmit": true,                            // No generar archivos de salida
+    
+    // ============================================================================
+    // CONFIGURACIÓN DE MÓDULOS
+    // ============================================================================
+    "esModuleInterop": true,                   // Interoperabilidad con módulos ES
+    "module": "esnext",                        // Sistema de módulos ES6+
+    "moduleResolution": "bundler",             // Resolución de módulos para bundlers
+    
+    // ============================================================================
+    // OPCIONES ADICIONALES
+    // ============================================================================
+    "resolveJsonModule": true,                 // Permitir importar archivos JSON
+    "isolatedModules": true,                   // Módulos aislados para bundlers
+    "jsx": "preserve",                         // Preservar JSX para Next.js
+    "incremental": true,                       // Compilación incremental
+    
+    // ============================================================================
+    // PLUGINS
+    // ============================================================================
+    "plugins": [
+      {
+        "name": "next"                         // Plugin de Next.js
+      }
+    ],
+    
+    // ============================================================================
+    // MAPEO DE RUTAS
+    // ============================================================================
+    "paths": {
+      "@/*": ["./*"]                           // Alias @/ para rutas absolutas
+    }
+  },
+  
+  // ============================================================================
+  // ARCHIVOS INCLUIDOS Y EXCLUIDOS
+  // ============================================================================
+  "include": [
+    "next-env.d.ts",                           // Tipos de Next.js
+    "**/*.ts",                                 // Todos los archivos TypeScript
+    "**/*.tsx",                                // Todos los archivos TSX
+    ".next/types/**/*.ts"                      // Tipos generados por Next.js
+  ],
+  "exclude": [
+    "node_modules"                             // Excluir dependencias
+  ]
+}

@@ -1,0 +1,30 @@
+# syntax=docker/dockerfile:1
+
+FROM node:20-alpine AS base
+WORKDIR /app
+ENV NODE_ENV=production
+
+FROM base AS deps
+RUN corepack enable
+COPY package.json pnpm-lock.yaml* yarn.lock* package-lock.json* ./
+RUN if [ -f package-lock.json ]; then npm ci; \
+    elif [ -f yarn.lock ]; then yarn install --frozen-lockfile; \
+    elif [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile; \
+    else npm install; fi
+
+FROM base AS builder
+RUN corepack enable
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npx prisma generate || true
+RUN if [ -f tsconfig.json ]; then npx tsc -p tsconfig.json; else echo "No tsconfig.json found"; fi
+
+FROM base AS runner
+USER node
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY --chown=node:node package.json ./
+COPY --chown=node:node prisma ./prisma
+COPY --from=builder --chown=node:node /app/dist ./dist
+EXPOSE 3000
+CMD sh -c "npx prisma migrate deploy && node dist/index.js"

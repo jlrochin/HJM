@@ -1,0 +1,463 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset para el primer elemento de cualquier nivel dentro de documentación */
+body[data-documentation="true"] *:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Optimizaciones de rendimiento */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Optimizaciones de scroll */
+.scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 3px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.8);
+}
+
+/* Optimizaciones de animaciones */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Optimizaciones de tarjetas */
+.service-card {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.service-card:hover {
+  transform: translateY(-2px) translateZ(0);
+  transition: transform 0.2s ease-out;
+}
+
+/* Optimizaciones de grid */
+.services-grid {
+  contain: layout style paint;
+}
+
+/* Optimizaciones de input */
+.search-input {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Optimizaciones de modal */
+.modal-content {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  margin: auto !important;
+  max-width: 95vw !important;
+  max-height: 95vh !important;
+  width: 95vw !important;
+  height: 95vh !important;
+  overflow: auto !important;
+  background: white !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Modo oscuro para el modal */
+@media (prefers-color-scheme: dark) {
+  .modal-content {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+  }
+}
+
+/* Asegurar que el modal esté por encima del overlay */
+[data-radix-dialog-content] {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  margin: auto !important;
+  max-width: 95vw !important;
+  max-height: 95vh !important;
+  width: 95vw !important;
+  height: 95vh !important;
+  overflow: auto !important;
+  z-index: 51 !important;
+  background: white !important;
+  border-radius: 0.75rem !important;
+}
+
+/* Modo oscuro para el contenido del modal */
+@media (prefers-color-scheme: dark) {
+  [data-radix-dialog-content] {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+  }
+}
+
+/* Asegurar que el modal esté dentro de la ventana */
+[data-radix-dialog-content] {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+  max-width: 90vw !important;
+  max-height: 85vh !important;
+  overflow: auto !important;
+}
+
+/* Overlay del modal */
+[data-radix-dialog-overlay] {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  z-index: 50 !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+}
+
+/* Asegurar que el modal esté por encima del overlay */
+[data-radix-dialog-content] {
+  z-index: 51 !important;
+}
+
+/* Asegurar que el contenido del modal esté por encima de todo */
+.service-form-modal {
+  z-index: 52 !important;
+}
+
+.service-form-modal .sticky-header {
+  z-index: 53 !important;
+}
+
+/* Optimizaciones específicas para el formulario de servicios */
+.service-form-modal {
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+
+/* Header sticky del modal */
+.service-form-modal .sticky-header {
+  position: sticky !important;
+  top: 0 !important;
+  background: white !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  padding-bottom: 1rem !important;
+  margin-bottom: 1.5rem !important;
+  z-index: 10 !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Modo oscuro para el header sticky */
+@media (prefers-color-scheme: dark) {
+  .service-form-modal .sticky-header {
+    background: #1f2937 !important;
+    border-bottom-color: #374151 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  }
+}
+
+/* Botón de cerrar mejorado */
+.service-form-modal .close-button {
+  transition: all 0.2s ease !important;
+  border-radius: 50% !important;
+  padding: 0.5rem !important;
+}
+
+.service-form-modal .close-button:hover {
+  background-color: #f3f4f6 !important;
+  transform: scale(1.1) !important;
+}
+
+.service-form-modal .close-button:active {
+  transform: scale(0.95) !important;
+}
+
+/* Modo oscuro para el botón de cerrar */
+@media (prefers-color-scheme: dark) {
+  .service-form-modal .close-button:hover {
+    background-color: #374151 !important;
+  }
+}
+
+.service-form-modal .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.service-form-modal .form-section {
+  margin-bottom: 2rem;
+}
+
+.service-form-modal .form-section h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #374151;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+/* Modo oscuro para las secciones del formulario */
+@media (prefers-color-scheme: dark) {
+  .service-form-modal .form-section h3 {
+    color: #f9fafb !important;
+    border-bottom-color: #4b5563 !important;
+  }
+}
+
+.service-form-modal .form-field {
+  margin-bottom: 1rem;
+}
+
+.service-form-modal .form-field label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+/* Modo oscuro para las etiquetas */
+@media (prefers-color-scheme: dark) {
+  .service-form-modal .form-field label {
+    color: #f9fafb !important;
+  }
+}
+
+.service-form-modal .form-field input,
+.service-form-modal .form-field select,
+.service-form-modal .form-field textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease;
+}
+
+/* Modo oscuro para los inputs */
+@media (prefers-color-scheme: dark) {
+  .service-form-modal .form-field input,
+  .service-form-modal .form-field select,
+  .service-form-modal .form-field textarea {
+    background: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #f9fafb !important;
+  }
+}
+
+.service-form-modal .form-field input:focus,
+.service-form-modal .form-field select:focus,
+.service-form-modal .form-field textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Modo oscuro para el focus de los inputs */
+@media (prefers-color-scheme: dark) {
+  .service-form-modal .form-field input:focus,
+  .service-form-modal .form-field select:focus,
+  .service-form-modal .form-field textarea:focus {
+    border-color: #60a5fa !important;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2) !important;
+  }
+}
+
+.service-form-modal .required-field::after {
+  content: " *";
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Optimizaciones de botones */
+.btn-optimized {
+  will-change: transform;
+  transform: translateZ(0);
+  transition: transform 0.1s ease-out;
+}
+
+.btn-optimized:hover {
+  transform: translateY(-1px) translateZ(0);
+}
+
+.btn-optimized:active {
+  transform: translateY(0) translateZ(0);
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 9.8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 9.8%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+html,
+body {
+  overflow-y: scroll;
+}
+
+/* Forzar la manita en todos los items de menú de Radix UI (Dropdown, Context, Menubar, Select, etc.) */
+[data-radix-menu-item],
+[data-radix-dropdown-menu-item],
+[data-radix-select-item],
+[data-radix-menubar-item],
+[data-radix-context-menu-item] {
+  cursor: pointer !important;
+}

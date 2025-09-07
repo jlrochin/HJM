@@ -1,0 +1,19 @@
+# ============================================================================
+# VARIABLES DE ENTORNO PARA RAILWAY
+# ============================================================================
+
+# Base de datos PostgreSQL (Railway la proporciona automáticamente)
+DATABASE_URL="postgresql://username:password@host:port/database"
+
+# Next.js
+NODE_ENV=production
+NEXTAUTH_URL=https://tu-app.railway.app
+NEXTAUTH_SECRET=tu-secret-super-seguro
+
+# Autenticación
+NEXTAUTH_GITHUB_ID=tu-github-client-id
+NEXTAUTH_GITHUB_SECRET=tu-github-client-secret
+
+# Configuración de la aplicación
+APP_NAME=CAGPU
+APP_VERSION=1.0.0

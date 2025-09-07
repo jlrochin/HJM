@@ -1,0 +1,112 @@
+/* Estilos personalizados para Driver.js - Estilo Limpio y Profesional */
+
+/* Estilos simples para Driver.js - Estilo oficial */
+
+/* Tema principal del popover */
+.driverjs-theme-mau .driver-popover {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  max-width: 320px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #374151;
+}
+
+/* Descripción */
+.driverjs-theme-mau .driver-popover-description {
+  padding: 15px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Footer */
+.driverjs-theme-mau .driver-popover-footer {
+  padding: 10px 15px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Texto de progreso */
+.driverjs-theme-mau .driver-popover-progress-text {
+  color: #6b7280;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* Botones */
+.driverjs-theme-mau .driver-popover-footer button {
+  padding: 8px 16px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  border: 1px solid !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+  outline: none !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  background-clip: padding-box !important;
+}
+
+/* Botón anterior */
+.driverjs-theme-mau .driver-popover-prev-btn {
+  background: #ffffff !important;
+  color: #374151 !important;
+  border-color: #d1d5db !important;
+}
+
+.driverjs-theme-mau .driver-popover-prev-btn:hover {
+  background: #f9fafb !important;
+}
+
+/* Botón siguiente */
+.driverjs-theme-mau .driver-popover-next-btn,
+.driverjs-theme-mau .driver-popover-done-btn {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+  margin-left: 8px !important;
+}
+
+.driverjs-theme-mau .driver-popover-next-btn:hover,
+.driverjs-theme-mau .driver-popover-done-btn:hover {
+  background: #1f2937 !important;
+}
+
+/* Botón cerrar */
+.driverjs-theme-mau .driver-popover-close-btn {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  font-size: 18px;
+  padding: 4px;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+/* Responsive para móviles */
+@media (max-width: 640px) {
+  .driverjs-theme-mau .driver-popover {
+    max-width: 320px;
+    margin: 16px;
+  }
+  
+  .driverjs-theme-mau .driver-popover-footer {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+  
+  .driverjs-theme-mau .driver-popover-footer button {
+    width: 100%;
+  }
+  
+  .driverjs-theme-mau .driver-popover-progress-text {
+    order: 1;
+    text-align: center;
+  }
+}

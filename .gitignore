@@ -1,0 +1,15 @@
+# Ignorar archivos de entorno locales
+cagpu-db.env
+mau-db.env
+cagpu.env
+mau.env
+
+# Variantes comunes en todo el repo
+.env
+.env.*
+*.env
+**/*.env
+
+# Mantener archivos de ejemplo versionados
+!.env.example
+!**/*.env.example

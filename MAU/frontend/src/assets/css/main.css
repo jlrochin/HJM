@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background-main font-sans;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-secondary-900;
+  }
+}
+
+@layer components {
+  /* Botones */
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-secondary-900 font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2;
+  }
+
+  .btn-accent {
+    @apply bg-accent-600 hover:bg-accent-500 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent-600 focus:ring-offset-2;
+  }
+
+  .btn-success {
+    @apply bg-success hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-success focus:ring-offset-2;
+  }
+
+  /* Tarjetas */
+  .card {
+    @apply bg-background-card rounded-xl shadow-lg border border-gray-100;
+  }
+
+  .card-header {
+    @apply px-6 py-4 border-b border-gray-100;
+  }
+
+  .card-body {
+    @apply px-6 py-4;
+  }
+
+  /* Formularios */
+  .form-input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors duration-200;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-secondary-900 mb-1;
+  }
+
+  .form-error {
+    @apply text-accent-500 text-sm mt-1;
+  }
+
+  /* Estados */
+  .status-pendiente {
+    @apply bg-warning text-white;
+  }
+
+  .status-validada {
+    @apply bg-blue-500 text-white;
+  }
+
+  .status-parcialmente-surtida {
+    @apply bg-orange-500 text-white;
+  }
+
+  .status-surtida {
+    @apply bg-success text-white;
+  }
+
+  .status-cancelada {
+    @apply bg-accent-500 text-white;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  /* Navegación sticky */
+  .sticky-header {
+    @apply sticky top-0 z-40 bg-background-card border-b border-gray-200;
+  }
+
+  /* Contenido scrolleable */
+  .scrollable-content {
+    @apply flex-1 overflow-auto;
+  }
+
+  /* Modales scrolleables */
+  .modal-scrollable {
+    overflow-y: auto;
+    max-height: calc(90vh - 120px);
+  }
+
+  /* Corregir modales existentes - usando clases específicas de Tailwind */
+  .fixed .rounded-xl.shadow-xl.max-h-\\[90vh\\] {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .fixed .rounded-xl.shadow-xl .scrollable-content {
+    overflow-y: auto !important;
+    flex: 1 !important;
+    max-height: calc(90vh - 160px) !important;
+  }
+}
+
+/* Personalización de toasts */
+.Vue-Toastification__toast--success {
+  @apply bg-success;
+}
+
+.Vue-Toastification__toast--error {
+  @apply bg-accent-500;
+}
+
+.Vue-Toastification__toast--warning {
+  @apply bg-warning;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Scrollbars personalizados */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded-full;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
