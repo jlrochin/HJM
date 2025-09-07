@@ -12,6 +12,8 @@ import { loginRateLimiter, apiRateLimiter, getRateLimitInfo } from './lib/rate-l
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  console.log('Middleware executing for pathname:', pathname);
+  console.log('Request URL:', request.url);
 
   // Rate limiting para login
   if (pathname.startsWith('/api/auth/login')) {
@@ -34,6 +36,7 @@ export async function middleware(request: NextRequest) {
       pathname.startsWith('/documentacion') ||
       pathname.startsWith('/api/auth') || 
       pathname.startsWith('/api/ping')) {
+    console.log('Allowing access to public route:', pathname);
     return NextResponse.next();
   }
 
@@ -71,6 +74,7 @@ export async function middleware(request: NextRequest) {
   // Para rutas de páginas (no APIs), redirigir al login si no hay autenticación
   const authCookie = request.cookies.get('auth');
   if (!authCookie) {
+    console.log('No auth cookie found, redirecting to login');
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = '/login';
     return NextResponse.redirect(loginUrl);
@@ -99,5 +103,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/((?!_next|static|favicon.ico|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg|.*\\.gif|api/auth/login|api/auth/crearusuario|api/auth/logout).*)',
+    '/',
   ],
 }; 

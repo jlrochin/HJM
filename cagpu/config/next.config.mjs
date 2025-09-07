@@ -11,6 +11,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // ============================================================================
+  // CONFIGURACIÓN DE RUTAS
+  // ============================================================================
+  // Configurar basePath para que funcione bajo /cagpu
+  basePath: '/cagpu',
+
+  // ============================================================================
   // CONFIGURACIÓN DE ESLINT
   // ============================================================================
   // Solo ignorar errores de ESLint en desarrollo

@@ -60,7 +60,7 @@ api.interceptors.response.use(
                 // Si el refresh falla, limpiar tokens y redirigir a login
                 localStorage.removeItem('access_token')
                 localStorage.removeItem('refresh_token')
-                window.location.href = '/login'
+                window.location.href = '/mau/login'
                 return Promise.reject(refreshError)
             }
         }

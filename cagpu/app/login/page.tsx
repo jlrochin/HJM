@@ -73,7 +73,7 @@ export default function Login() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <AnimatedBackground />
-      
+
       {/* Toggle de tema en la esquina superior derecha */}
       <div className="absolute top-4 right-4 z-50">
         <ThemeToggle />
@@ -92,7 +92,7 @@ export default function Login() {
                 <CardHeader className="text-center space-y-2">
                   <div className="flex justify-center mb-4">
                     <img
-                      src="/cagpu_logo_new.png"
+                      src="/cagpu/cagpu_logo_new.png"
                       alt="CAGPU Logo"
                       className="h-32 w-auto max-w-72"
                     />
@@ -109,9 +109,9 @@ export default function Login() {
                     <div className="grid w-full items-center gap-4">
                       <div className="flex flex-col space-y-1.5">
                         <Label htmlFor="username" className="text-gray-700 dark:text-gray-200">Usuario</Label>
-                        <Input 
-                          id="username" 
-                          type="text" 
+                        <Input
+                          id="username"
+                          type="text"
                           placeholder="Ingresa tu usuario"
                           required
                           className="bg-white/40 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-gray-100"
@@ -121,8 +121,8 @@ export default function Login() {
                       </div>
                       <div className="flex flex-col space-y-1.5">
                         <Label htmlFor="password" className="text-gray-700 dark:text-gray-200">Contraseña</Label>
-                        <Input 
-                          id="password" 
+                        <Input
+                          id="password"
                           type="password"
                           placeholder="Ingresa tu contraseña"
                           required
@@ -138,8 +138,8 @@ export default function Login() {
                       </div>
                     )}
                     <div className="mt-6">
-                      <Button 
-                        type="submit" 
+                      <Button
+                        type="submit"
                         disabled={isLoading}
                         className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-blue-500 dark:to-purple-600 dark:hover:from-blue-600 dark:hover:to-purple-700"
                       >

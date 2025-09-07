@@ -357,7 +357,7 @@ export default function AdminUsuariosPage() {
                         <td>${u.isActive ? 'Activo' : 'Inactivo'}</td>
                       </tr>
                     `).join('')
-                    const logoUrl = `${window.location.origin}/cagpu_logo_new.png`
+                    const logoUrl = `${window.location.origin}/cagpu/cagpu_logo_new.png`
                     const now = new Date().toLocaleString('es-ES')
                     const visibleFrom = (page - 1) * pageSize + 1
                     const visibleTo = Math.min(page * pageSize, total)

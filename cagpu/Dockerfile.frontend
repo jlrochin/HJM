@@ -28,9 +28,18 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
+# Copiar todo lo necesario para el runtime
 COPY --from=builder /app/.next ./.next
-# COPY --from=builder /app/public ./public
+COPY --from=builder /app/app ./app
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/middleware.ts ./middleware.ts
+COPY --from=builder /app/next.config.mjs ./next.config.mjs
 COPY --from=builder /app/package.json ./package.json
 COPY --from=deps /app/node_modules ./node_modules
+# Copiar cualquier directorio adicional que Next.js pueda necesitar
+COPY --from=builder /app/lib ./lib
+COPY --from=builder /app/components ./components
+COPY --from=builder /app/hooks ./hooks
+COPY --from=builder /app/prisma ./prisma
 EXPOSE 3000
 CMD ["sh", "-c", "npm run start -- -p ${PORT}"]

@@ -19,7 +19,9 @@ services:
       - frontend_net
 
   home:
-    image: ghcr.io/jlrochin/home:latest
+    build:
+      context: ./home
+      dockerfile: Dockerfile
     container_name: home
     environment:
       NODE_ENV: production
@@ -57,8 +59,12 @@ services:
       - backend_net
 
   cagpu-frontend:
-    image: ghcr.io/jlrochin/cagpu-frontend:latest
+    build:
+      context: ./cagpu
+      dockerfile: Dockerfile.frontend
     container_name: cagpu-frontend
+    env_file:
+      - ./cagpu.env
     environment:
       NODE_ENV: production
     labels:
@@ -66,14 +72,14 @@ services:
       - "traefik.http.routers.cagpu-frontend.rule=PathPrefix(`/cagpu`) && !PathPrefix(`/cagpu/api`)"
       - "traefik.http.routers.cagpu-frontend.entrypoints=web"
       - "traefik.http.services.cagpu-frontend.loadbalancer.server.port=3000"
-      - "traefik.http.middlewares.cagpu-strip.stripprefix.prefixes=/cagpu"
-      - "traefik.http.routers.cagpu-frontend.middlewares=cagpu-strip"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - frontend_net
 
   cagpu-backend:
-    image: ghcr.io/jlrochin/cagpu-backend:latest
+    build:
+      context: ./cagpu
+      dockerfile: Dockerfile.backend
     container_name: cagpu-backend
     depends_on:
       - postgres-cagpu
@@ -94,21 +100,23 @@ services:
       - backend_net
 
   mau-frontend:
-    image: ghcr.io/jlrochin/mau-frontend:latest
+    build:
+      context: ./MAU
+      dockerfile: Dockerfile.frontend
     container_name: mau-frontend
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.mau-frontend.rule=PathPrefix(`/mau`) && !PathPrefix(`/mau/api`)"
       - "traefik.http.routers.mau-frontend.entrypoints=web"
       - "traefik.http.services.mau-frontend.loadbalancer.server.port=80"
-      - "traefik.http.middlewares.mau-strip.stripprefix.prefixes=/mau"
-      - "traefik.http.routers.mau-frontend.middlewares=mau-strip"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - frontend_net
 
   mau-backend:
-    image: ghcr.io/jlrochin/mau-backend:latest
+    build:
+      context: ./MAU
+      dockerfile: Dockerfile.backend
     container_name: mau-backend
     depends_on:
       - postgres-mau
