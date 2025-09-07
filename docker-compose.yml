@@ -20,9 +20,7 @@ services:
       - backend_net
 
   home:
-    build:
-      context: ./home
-      dockerfile: Dockerfile
+    image: ghcr.io/jlrochin/home:latest
     container_name: home
     environment:
       NODE_ENV: production
@@ -61,9 +59,7 @@ services:
       - backend_net
 
   cagpu-frontend:
-    build:
-      context: ./cagpu
-      dockerfile: Dockerfile.frontend
+    image: ghcr.io/jlrochin/cagpu-frontend:latest
     container_name: cagpu-frontend
     env_file:
       - ./cagpu.env
@@ -80,9 +76,7 @@ services:
       - frontend_net
 
   cagpu-backend:
-    build:
-      context: ./cagpu
-      dockerfile: Dockerfile.backend
+    image: ghcr.io/jlrochin/cagpu-backend:latest
     container_name: cagpu-backend
     depends_on:
       - postgres-cagpu
@@ -104,9 +98,7 @@ services:
       - backend_net
 
   mau-frontend:
-    build:
-      context: ./MAU
-      dockerfile: Dockerfile.frontend
+    image: ghcr.io/jlrochin/mau-frontend:latest
     container_name: mau-frontend
     labels:
       - "traefik.enable=true"
@@ -119,9 +111,7 @@ services:
       - frontend_net
 
   mau-backend:
-    build:
-      context: ./MAU
-      dockerfile: Dockerfile.backend
+    image: ghcr.io/jlrochin/mau-backend:latest
     container_name: mau-backend
     depends_on:
       - postgres-mau
