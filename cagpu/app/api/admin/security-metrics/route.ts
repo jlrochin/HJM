@@ -109,7 +109,7 @@ export async function GET(request: NextRequest) {
         blockedRequests: rateLimitStats.entries.filter(e => e.count > 50).length
       },
       recentActivity: {
-        logins: recentLogins.map(log => ({
+        logins: recentLogins.map((log: any) => ({
           id: log.id,
           username: log.performedByUser?.username || 'unknown',
           userFullName: log.performedByUser ? 
@@ -118,7 +118,7 @@ export async function GET(request: NextRequest) {
           userAgent: log.userAgent,
           timestamp: log.createdAt
         })),
-        securityEvents: recentSecurityEvents.map(event => ({
+        securityEvents: recentSecurityEvents.map((event: any) => ({
           id: event.id,
           action: event.action,
           username: event.performedByUser?.username || 'unknown',
