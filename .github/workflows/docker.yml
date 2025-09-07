@@ -2,7 +2,7 @@ name: Build and Push All Images
 
 on:
   push:
-    branches: [ "dev", "test", "prod", "main", "master" ]
+    branches: ["dev", "test", "prod", "main", "master"]
   workflow_dispatch:
 
 permissions:
@@ -24,10 +24,10 @@ jobs:
             context: ./cagpu
             file: ./cagpu/Dockerfile.frontend
             tag: ghcr.io/jlrochin/cagpu-frontend:latest
-          - name: cagpu-backend
-            context: ./cagpu
-            file: ./cagpu/Dockerfile.backend
-            tag: ghcr.io/jlrochin/cagpu-backend:latest
+          # - name: cagpu-backend
+          #   context: ./cagpu
+          #   file: ./cagpu/Dockerfile.backend
+          #   tag: ghcr.io/jlrochin/cagpu-backend:latest
           - name: mau-frontend
             context: ./MAU
             file: ./MAU/Dockerfile.frontend
