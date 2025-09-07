@@ -19,7 +19,7 @@ export function useAuth() {
 
   const checkAuth = useCallback(async () => {
     try {
-      const response = await fetch('/api/profile', {
+      const response = await fetch('/cagpu/api/profile', {
         credentials: 'include'
       })
       

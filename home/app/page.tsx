@@ -43,7 +43,7 @@ export default function HomePage() {
           {/* Módulo de Atención al Usuario */}
           <div
             className="bg-white border-2 border-gray-300 rounded-lg p-8 hover:border-blue-600 hover:shadow-md transition-all duration-200 cursor-pointer"
-            onClick={() => handleModuleClick('/hjm/mau')}
+            onClick={() => handleModuleClick('/mau')}
           >
             <div className="flex items-center mb-6">
               <div className="bg-blue-100 p-3 rounded-lg mr-4">
@@ -70,7 +70,7 @@ export default function HomePage() {
           {/* Módulo de Informes */}
           <div
             className="bg-white border-2 border-gray-300 rounded-lg p-8 hover:border-green-600 hover:shadow-md transition-all duration-200 cursor-pointer"
-            onClick={() => handleModuleClick('/hjm/cagpu')}
+            onClick={() => handleModuleClick('/cagpu')}
           >
             <div className="flex items-center mb-6">
               <div className="bg-green-100 p-3 rounded-lg mr-4">

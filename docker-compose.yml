@@ -89,7 +89,7 @@ services:
       NODE_ENV: production
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.cagpu-backend.rule=PathPrefix(`/cagpu`) && PathPrefix(`/cagpu/api`)"
+      - "traefik.http.routers.cagpu-backend.rule=PathPrefix(`/cagpu/api`)"
       - "traefik.http.routers.cagpu-backend.entrypoints=web"
       - "traefik.http.services.cagpu-backend.loadbalancer.server.port=3000"
       - "traefik.http.middlewares.cagpu-api-strip.stripprefix.prefixes=/cagpu"

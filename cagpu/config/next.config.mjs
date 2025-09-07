@@ -13,8 +13,8 @@ const nextConfig = {
   // ============================================================================
   // CONFIGURACIÓN DE RUTAS
   // ============================================================================
-  // Configurar basePath para que funcione bajo /cagpu
-  basePath: '/cagpu',
+  // No usar basePath - Traefik maneja el prefijo /cagpu
+  // basePath: '/cagpu',
 
   // ============================================================================
   // CONFIGURACIÓN DE ESLINT
