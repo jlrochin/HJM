@@ -29,15 +29,15 @@ class LoginSerializer(serializers.Serializer):
     
     def validate_recaptcha_token(self, value):
         """Valida el token de reCAPTCHA"""
+        # Deshabilitado temporalmente para producción interna
         # En modo desarrollo, permitir tokens vacíos o fallback
         if settings.DEBUG and (not value or value == 'fallback-token'):
             return value
-            
-        if not value:
-            raise serializers.ValidationError(
-                'Token de verificación reCAPTCHA requerido.'
-            )
         
+        # Permitir tokens vacíos en producción (reCAPTCHA deshabilitado)
+        if not value:
+            return value
+            
         # Obtener IP del cliente
         user_ip = None
         if self.request:
