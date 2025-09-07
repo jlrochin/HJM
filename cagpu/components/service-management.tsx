@@ -55,7 +55,7 @@ export function ServiceManagement() {
           servicesRes.json(),
           directionsRes.json()
         ])
-        
+
         // Validar que los datos sean arrays
         if (Array.isArray(servicesData) && Array.isArray(directionsData)) {
           setServices(servicesData)
