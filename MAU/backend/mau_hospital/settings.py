@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-me-in-producti
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'mau-backend', 'cagpu-backend']
 
 
 # Application definition
@@ -91,8 +91,12 @@ WSGI_APPLICATION = 'mau_hospital.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME', default='maudb'),
+        'USER': config('DB_USER', default='mau_user'),
+        'PASSWORD': config('DB_PASSWORD', default='Mau_Pg#7hT4qX1pR6yV8cJ2m'),
+        'HOST': config('DB_HOST', default='postgres-mau'),
+        'PORT': config('DB_PORT', default='5432'),
     }
 }
 

@@ -92,8 +92,8 @@ export function ServiceManagement() {
 
       // Cargar servicios y direcciones en paralelo
       const [servicesRes, directionsRes] = await Promise.all([
-        fetch('/cagpu/api/services', { credentials: 'include' }),
-        fetch('/cagpu/api/directions', { credentials: 'include' })
+        fetch('http://localhost:3001/api/services', { credentials: 'include' }),
+        fetch('http://localhost:3001/api/directions', { credentials: 'include' })
       ])
 
       if (servicesRes.ok && directionsRes.ok) {

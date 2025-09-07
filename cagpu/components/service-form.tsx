@@ -60,7 +60,7 @@ export function ServiceForm({ service, onSaved }: { service?: Service, onSaved?:
 
   // Cargar direcciones para el select
   useEffect(() => {
-    fetch('/cagpu/api/directions')
+    fetch('/api/directions')
       .then(res => res.json())
       .then(data => setDirectionsData(data))
       .catch(error => console.error('Error al cargar direcciones:', error))

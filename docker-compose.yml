@@ -5,12 +5,14 @@ services:
     image: traefik:v3.1
     container_name: traefik
     command:
-      - --api.dashboard=false
+      - --api.dashboard=true
+      - --api.insecure=true
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
     ports:
       - "80:80"
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
@@ -27,8 +29,9 @@ services:
       NODE_ENV: production
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.home.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.home.rule=PathPrefix(`/`) && !PathPrefix(`/cagpu`) && !PathPrefix(`/mau`)"
       - "traefik.http.routers.home.entrypoints=web"
+      - "traefik.http.routers.home.priority=1"
       - "traefik.http.services.home.loadbalancer.server.port=3000"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
@@ -71,6 +74,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.cagpu-frontend.rule=PathPrefix(`/cagpu`) && !PathPrefix(`/cagpu/api`)"
       - "traefik.http.routers.cagpu-frontend.entrypoints=web"
+      - "traefik.http.routers.cagpu-frontend.priority=10"
       - "traefik.http.services.cagpu-frontend.loadbalancer.server.port=3000"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
@@ -91,6 +95,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.cagpu-backend.rule=PathPrefix(`/cagpu/api`)"
       - "traefik.http.routers.cagpu-backend.entrypoints=web"
+      - "traefik.http.routers.cagpu-backend.priority=20"
       - "traefik.http.services.cagpu-backend.loadbalancer.server.port=3000"
       - "traefik.http.middlewares.cagpu-api-strip.stripprefix.prefixes=/cagpu"
       - "traefik.http.routers.cagpu-backend.middlewares=cagpu-api-strip"
@@ -108,6 +113,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.mau-frontend.rule=PathPrefix(`/mau`) && !PathPrefix(`/mau/api`)"
       - "traefik.http.routers.mau-frontend.entrypoints=web"
+      - "traefik.http.routers.mau-frontend.priority=10"
       - "traefik.http.services.mau-frontend.loadbalancer.server.port=80"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
@@ -128,9 +134,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.mau-backend.rule=PathPrefix(`/mau/api`)"
       - "traefik.http.routers.mau-backend.entrypoints=web"
+      - "traefik.http.routers.mau-backend.priority=20"
       - "traefik.http.services.mau-backend.loadbalancer.server.port=3000"
-      - "traefik.http.middlewares.mau-api-strip.stripprefix.prefixes=/mau/api"
-      - "traefik.http.routers.mau-backend.middlewares=mau-api-strip"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - frontend_net
@@ -152,5 +157,3 @@ networks:
     driver: bridge
   backend_net:
     driver: bridge
-
-

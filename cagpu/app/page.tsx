@@ -69,9 +69,11 @@ export default function Home() {
   // Estado para el rol del usuario y la pestaña activa
   const [role, setRole] = React.useState<string>('user')
   const [tab, setTab] = React.useState<string>('admin')
+  const [isAuthenticated, setIsAuthenticated] = React.useState<boolean>(false)
 
   // Efecto para inicializar el rol y la pestaña por defecto
   React.useEffect(() => {
+    setIsAuthenticated(true)
     const userRole = getRole()
     setRole(userRole)
 
@@ -82,6 +84,18 @@ export default function Home() {
       setTab('dashboard')
     }
   }, [])
+
+  // Mostrar loading mientras se verifica la autenticación
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-lg text-muted-foreground">Verificando autenticación...</p>
+        </div>
+      </div>
+    )
+  }
 
   // Manejador para navegar a la pestaña de servicios
   const handleGoToServices = () => setTab('services')

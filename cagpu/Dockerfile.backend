@@ -44,4 +44,4 @@ COPY --from=builder /app/components ./components
 COPY --from=builder /app/hooks ./hooks
 COPY --from=builder /app/prisma ./prisma
 EXPOSE 3000
-CMD ["sh", "-c", "npm run start -- -p ${PORT}"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run start -- -p ${PORT}"]

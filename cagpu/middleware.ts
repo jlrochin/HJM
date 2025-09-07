@@ -14,6 +14,13 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   console.log('Middleware executing for pathname:', pathname);
   console.log('Request URL:', request.url);
+  console.log('Full URL:', request.nextUrl.toString());
+
+  // Redirección automática de la raíz de CAGPU a login
+  if (pathname === '/cagpu') {
+    const loginUrl = new URL('/cagpu/login', request.url);
+    return NextResponse.redirect(loginUrl);
+  }
 
   // Rate limiting para login
   if (pathname.startsWith('/api/auth/login')) {
