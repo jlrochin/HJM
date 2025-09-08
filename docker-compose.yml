@@ -99,6 +99,7 @@ services:
       - ./cagpu.env
     environment:
       NODE_ENV: production
+      HOST: 0.0.0.0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.cagpu-backend.rule=PathPrefix(`/cagpu/api`)"
