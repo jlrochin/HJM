@@ -57,6 +57,11 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - backend_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
 
   cagpu-frontend:
     image: ghcr.io/jlrochin/cagpu-frontend:latest
@@ -114,7 +119,8 @@ services:
     image: ghcr.io/jlrochin/mau-backend:latest
     container_name: mau-backend
     depends_on:
-      - postgres-mau
+      postgres-mau:
+        condition: service_healthy
     env_file:
       - ./mau.env
     environment:
