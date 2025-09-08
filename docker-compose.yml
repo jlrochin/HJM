@@ -15,6 +15,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
+      # Redirección global de /api/* -> /cagpu/api/* para compatibilidad con clientes antiguos
+      - "traefik.http.middlewares.redirect-cagpu-api.redirectregex.regex=^/api/(.*)"
+      - "traefik.http.middlewares.redirect-cagpu-api.redirectregex.replacement=/cagpu/api/$1"
+      - "traefik.http.routers.api-redirect.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.api-redirect.entrypoints=web"
+      - "traefik.http.routers.api-redirect.priority=100"
+      - "traefik.http.routers.api-redirect.middlewares=redirect-cagpu-api"
+      - "traefik.http.routers.api-redirect.service=noop@internal"
     networks:
       - frontend_net
       - backend_net
