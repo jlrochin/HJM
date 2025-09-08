@@ -95,6 +95,8 @@ services:
       - "traefik.http.routers.cagpu-backend.entrypoints=web"
       - "traefik.http.routers.cagpu-backend.priority=20"
       - "traefik.http.services.cagpu-backend.loadbalancer.server.port=3000"
+      - "traefik.http.middlewares.cagpu-api-strip.stripprefix.prefixes=/cagpu"
+      - "traefik.http.routers.cagpu-backend.middlewares=cagpu-api-strip"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - frontend_net
