@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+/// <reference types="@testing-library/jest-dom" />
 import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import SecurityDashboard from '@/components/security-dashboard'
@@ -69,17 +71,17 @@ describe('SecurityDashboard', () => {
   })
 
   it('should render loading state initially', () => {
-    ;(global.fetch as jest.Mock).mockImplementation(() => 
-      new Promise(() => {}) // Promise que nunca se resuelve para simular loading
+    ; (global.fetch as jest.Mock).mockImplementation(() =>
+      new Promise(() => { }) // Promise que nunca se resuelve para simular loading
     )
 
     render(<SecurityDashboard />)
-    
+
     expect(screen.getByText('Cargando dashboard de seguridad...')).toBeInTheDocument()
   })
 
   it('should render dashboard with data', async () => {
-    ;(global.fetch as jest.Mock).mockResolvedValueOnce({
+    ; (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => mockDashboardData
     })
@@ -99,7 +101,7 @@ describe('SecurityDashboard', () => {
   })
 
   it('should display correct metrics', async () => {
-    ;(global.fetch as jest.Mock).mockResolvedValueOnce({
+    ; (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => mockDashboardData
     })
@@ -116,7 +118,7 @@ describe('SecurityDashboard', () => {
   })
 
   it('should handle error state', async () => {
-    ;(global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'))
+    ; (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'))
 
     render(<SecurityDashboard />)
 
@@ -126,7 +128,7 @@ describe('SecurityDashboard', () => {
   })
 
   it('should display tabs correctly', async () => {
-    ;(global.fetch as jest.Mock).mockResolvedValueOnce({
+    ; (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => mockDashboardData
     })
@@ -142,7 +144,7 @@ describe('SecurityDashboard', () => {
   })
 
   it('should show no alerts message when no alerts', async () => {
-    ;(global.fetch as jest.Mock).mockResolvedValueOnce({
+    ; (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => mockDashboardData
     })
@@ -162,7 +164,7 @@ describe('SecurityDashboard', () => {
   })
 
   it('should display recent activity', async () => {
-    ;(global.fetch as jest.Mock).mockResolvedValueOnce({
+    ; (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => mockDashboardData
     })
@@ -182,7 +184,7 @@ describe('SecurityDashboard', () => {
   })
 
   it('should call API with correct parameters', async () => {
-    ;(global.fetch as jest.Mock).mockResolvedValueOnce({
+    ; (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => mockDashboardData
     })
@@ -191,13 +193,13 @@ describe('SecurityDashboard', () => {
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
-        '/api/admin/security-metrics?period=24h&includeDetails=true'
+        '/cagpu/api/admin/security-metrics?period=24h&includeDetails=true'
       )
     })
   })
 
   it('should update period when selector changes', async () => {
-    ;(global.fetch as jest.Mock)
+    ; (global.fetch as jest.Mock)
       .mockResolvedValueOnce({
         ok: true,
         json: async () => mockDashboardData

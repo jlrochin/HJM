@@ -1,4 +1,5 @@
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/extend-expect'
+import type { } from 'jest'
 
 // Mock de Next.js router
 jest.mock('next/router', () => ({

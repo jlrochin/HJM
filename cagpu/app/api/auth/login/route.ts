@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
         .sign(new TextEncoder().encode(JWT_SECRET));
       response.cookies.set('auth', jwt, {
         httpOnly: true,
-        path: '/',
+        path: '/cagpu',
         // secure: true, // solo en producción
         // sameSite: 'lax',
         // maxAge: 60 * 60 * 24, // 1 día

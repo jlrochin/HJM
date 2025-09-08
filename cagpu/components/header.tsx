@@ -44,7 +44,7 @@ export function Header() {
   // Cierra la sesión del usuario, limpia el localStorage y redirige al login
   const handleLogout = React.useCallback(async () => {
     try {
-      await fetch("/api/auth/logout", { method: "POST" });
+      await fetch("/cagpu/api/auth/logout", { method: "POST" });
     } catch (e) {
       // Silenciar errores de logout
     }

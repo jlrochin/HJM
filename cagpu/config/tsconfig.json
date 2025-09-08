@@ -39,6 +39,7 @@
     "isolatedModules": true,                   // Módulos aislados para bundlers
     "jsx": "preserve",                         // Preservar JSX para Next.js
     "incremental": true,                       // Compilación incremental
+    "types": ["jest", "node"],
     
     // ============================================================================
     // PLUGINS

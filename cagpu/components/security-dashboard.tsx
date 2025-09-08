@@ -119,7 +119,7 @@ export default function SecurityDashboard() {
   const fetchData = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`/api/admin/security-metrics?period=${period}&includeDetails=true`)
+      const response = await fetch(`/cagpu/api/admin/security-metrics?period=${period}&includeDetails=true`)
 
       if (!response.ok) {
         throw new Error('Error al obtener métricas de seguridad')

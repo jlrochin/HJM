@@ -87,7 +87,7 @@ export function DashboardOverview() {
   useEffect(() => {
     const ping = async () => {
       try {
-        await fetch('/api/ping');
+        await fetch('/cagpu/api/ping');
       } catch { }
     };
     ping();

@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
   const response = NextResponse.json({ success: true, message: 'Sesión cerrada correctamente' });
   response.cookies.set('auth', '', {
     httpOnly: true,
-    path: '/',
+    path: '/cagpu',
     expires: new Date(0), // Expira inmediatamente
   });
   return response;

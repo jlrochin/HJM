@@ -11,19 +11,34 @@ import { loginRateLimiter, apiRateLimiter, getRateLimitInfo } from './lib/rate-l
 // ============================================================================
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  console.log('Middleware executing for pathname:', pathname);
-  console.log('Request URL:', request.url);
-  console.log('Full URL:', request.nextUrl.toString());
+  const originalPathname = request.nextUrl.pathname;
+  const basePath = '/cagpu';
 
-  // Redirección automática de la raíz de CAGPU a login
-  if (pathname === '/cagpu') {
-    const loginUrl = new URL('/cagpu/login', request.url);
+  // Solo operar bajo /cagpu
+  if (!originalPathname.startsWith(basePath)) {
+    return NextResponse.next();
+  }
+
+  // Path interno sin el prefijo /cagpu
+  const innerPath = originalPathname.slice(basePath.length) || '/';
+
+  // Permitir assets y archivos estáticos
+  if (
+    innerPath.startsWith('/_next') ||
+    innerPath.startsWith('/static') ||
+    /\.(png|jpg|jpeg|svg|gif|ico|css|js|map)$/i.test(innerPath)
+  ) {
+    return NextResponse.next();
+  }
+
+  // Bloquear contenido directo en /cagpu (redirigir a /cagpu/login siempre)
+  if (innerPath === '/' || innerPath === '') {
+    const loginUrl = new URL(`${basePath}/login`, request.url);
     return NextResponse.redirect(loginUrl);
   }
 
   // Rate limiting para login
-  if (pathname.startsWith('/api/auth/login')) {
+  if (innerPath.startsWith('/api/auth/login')) {
     const rateLimitResult = await loginRateLimiter(request);
     if (rateLimitResult.status === 429) {
       return rateLimitResult;
@@ -31,24 +46,25 @@ export async function middleware(request: NextRequest) {
   }
 
   // Rate limiting para APIs generales
-  if (pathname.startsWith('/api/') && !pathname.startsWith('/api/auth/')) {
+  if (innerPath.startsWith('/api/') && !innerPath.startsWith('/api/auth/')) {
     const rateLimitResult = await apiRateLimiter(request);
     if (rateLimitResult.status === 429) {
       return rateLimitResult;
     }
   }
 
-  // Permitir el acceso directo a /login, documentación y solo a las APIs de autenticación
-  if (pathname.startsWith('/login') || 
-      pathname.startsWith('/documentacion') ||
-      pathname.startsWith('/api/auth') || 
-      pathname.startsWith('/api/ping')) {
-    console.log('Allowing access to public route:', pathname);
+  // Permitir público: /cagpu/login, /cagpu/documentacion, /cagpu/api/auth/*, /cagpu/api/ping
+  if (
+    innerPath.startsWith('/login') ||
+    innerPath.startsWith('/documentacion') ||
+    innerPath.startsWith('/api/auth') ||
+    innerPath.startsWith('/api/ping')
+  ) {
     return NextResponse.next();
   }
 
-  // Para APIs que requieren autenticación pero no son de auth, verificar JWT
-  if (pathname.startsWith('/api/')) {
+  // Verificación de JWT para APIs no públicas
+  if (innerPath.startsWith('/api/')) {
     const authCookie = request.cookies.get('auth');
     if (!authCookie) {
       return NextResponse.json(
@@ -59,17 +75,10 @@ export async function middleware(request: NextRequest) {
 
     try {
       const verified = await jwtVerify(authCookie.value, new TextEncoder().encode(JWT_SECRET));
-      
-      // Agregar información del usuario al request para rate limiting
       const requestHeaders = new Headers(request.headers);
       requestHeaders.set('x-user-id', verified.payload.sub as string);
       requestHeaders.set('x-user-role', verified.payload.role as string);
-      
-      return NextResponse.next({
-        request: {
-          headers: requestHeaders,
-        },
-      });
+      return NextResponse.next({ request: { headers: requestHeaders } });
     } catch (e) {
       return NextResponse.json(
         { error: 'Token de autenticación inválido.' },
@@ -78,38 +87,25 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Para rutas de páginas (no APIs), redirigir al login si no hay autenticación
+  // Para páginas, exigir autenticación
   const authCookie = request.cookies.get('auth');
   if (!authCookie) {
-    console.log('No auth cookie found, redirecting to login');
-    const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = '/login';
+    const loginUrl = new URL(`${basePath}/login`, request.url);
     return NextResponse.redirect(loginUrl);
   }
 
   try {
     const verified = await jwtVerify(authCookie.value, new TextEncoder().encode(JWT_SECRET));
-    
-    // Agregar información del usuario al request para rate limiting
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set('x-user-id', verified.payload.sub as string);
     requestHeaders.set('x-user-role', verified.payload.role as string);
-    
-    return NextResponse.next({
-      request: {
-        headers: requestHeaders,
-      },
-    });
+    return NextResponse.next({ request: { headers: requestHeaders } });
   } catch (e) {
-    const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = '/login';
+    const loginUrl = new URL(`${basePath}/login`, request.url);
     return NextResponse.redirect(loginUrl);
   }
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next|static|favicon.ico|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg|.*\\.gif|api/auth/login|api/auth/crearusuario|api/auth/logout).*)',
-    '/',
-  ],
-}; 
+  matcher: ['/cagpu/:path*'],
+};

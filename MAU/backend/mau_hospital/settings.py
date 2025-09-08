@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
+from decouple import config  # pyright: ignore[reportMissingImports]
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,6 +28,12 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-me-in-producti
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '172.18.14.118', '0.0.0.0', 'mau-backend', 'cagpu-backend']
+
+# Compatibilidad con Traefik/Proxy inverso y origen IP específico
+USE_X_FORWARDED_HOST = True
+CSRF_TRUSTED_ORIGINS = [
+    'http://172.18.14.118',
+]
 
 
 # Application definition
